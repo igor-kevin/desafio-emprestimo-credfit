@@ -1,26 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateFuncionarioDto } from './dto/create-funcionario.dto';
 import { UpdateFuncionarioDto } from './dto/update-funcionario.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Funcionario } from './entities/funcionario.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class FuncionariosService {
-  create(createFuncionarioDto: CreateFuncionarioDto) {
-    return 'This action adds a new funcionario';
+  constructor(
+    @InjectRepository(Funcionario)
+    private readonly funcionarioRepository: Repository<Funcionario>
+  ) { }
+
+  create(createFuncionarioDto: CreateFuncionarioDto): Promise<Funcionario> {
+    return this.funcionarioRepository.save(createFuncionarioDto);
   }
 
-  findAll() {
-    return `This action returns all funcionarios`;
+  findAll(): Promise<Funcionario[]> {
+    return this.funcionarioRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} funcionario`;
+  async findOne(id: number): Promise<Funcionario> {
+    const funcionario = await this.funcionarioRepository.findOne({ where: { funcionario_id: id } })
+    if (!funcionario) {
+      throw new NotFoundException(`Não foi possível acessar o funcionario de id ${id}`)
+    }
+    return funcionario;
   }
 
-  update(id: number, updateFuncionarioDto: UpdateFuncionarioDto) {
-    return `This action updates a #${id} funcionario`;
+  async update(id: number, updateFuncionarioDto: UpdateFuncionarioDto) {
+    const funcionario = await this.funcionarioRepository.findOne({ where: { funcionario_id: id } })
+    if (!funcionario) {
+      throw new NotFoundException(`Não foi possível acessar o funcionario de id ${id}`)
+    }
+    return this.funcionarioRepository.create({ ...funcionario, ...updateFuncionarioDto })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} funcionario`;
+  async remove(id: number): Promise<void> {
+    const funcionario = await this.funcionarioRepository.findOne({ where: { funcionario_id: id } })
+    if (!funcionario) {
+      throw new NotFoundException(`Não foi possível acessar o funcionario de id ${id}`)
+    }
+    await this.funcionarioRepository.delete(funcionario)
   }
 }
