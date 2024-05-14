@@ -1,11 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { FuncionariosService } from './funcionarios.service';
 import { CreateFuncionarioDto } from './dto/create-funcionario.dto';
 import { UpdateFuncionarioDto } from './dto/update-funcionario.dto';
 
 @Controller('funcionarios')
 export class FuncionariosController {
-  constructor(private readonly funcionariosService: FuncionariosService) {}
+  constructor(private readonly funcionariosService: FuncionariosService) { }
 
   @Post()
   create(@Body() createFuncionarioDto: CreateFuncionarioDto) {
@@ -22,7 +22,7 @@ export class FuncionariosController {
     return this.funcionariosService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateFuncionarioDto: UpdateFuncionarioDto) {
     return this.funcionariosService.update(+id, updateFuncionarioDto);
   }
