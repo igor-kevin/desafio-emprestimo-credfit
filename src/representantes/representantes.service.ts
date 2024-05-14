@@ -1,26 +1,42 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRepresentanteDto } from './dto/create-representante.dto';
 import { UpdateRepresentanteDto } from './dto/update-representante.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Representante } from './entities/representante.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class RepresentantesService {
+  constructor(
+    @InjectRepository(Representante)
+    private readonly representanteRepository: Repository<Representante>,
+  ) { }
+
   create(createRepresentanteDto: CreateRepresentanteDto) {
-    return 'This action adds a new representante';
+    return this.representanteRepository.create(createRepresentanteDto);
   }
 
-  findAll() {
-    return `This action returns all representantes`;
+  async findAll(): Promise<Representante[]> {
+    return await this.representanteRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} representante`;
+  findOne(id: number): Promise<Representante> {
+    const representante = this.representanteRepository.findOne({ where: { representante_id: id } });
+    if (!representante) {
+      throw new NotFoundException(`Não achou o representante de id #${id}`);
+    }
+    return representante;
   }
 
-  update(id: number, updateRepresentanteDto: UpdateRepresentanteDto) {
-    return `This action updates a #${id} representante`;
+  async update(id: number, updateRepresentanteDto: UpdateRepresentanteDto): Promise<Representante> {
+    const representante = await this.representanteRepository.findOne({ where: { representante_id: id } });
+    if (!representante) {
+      throw new NotFoundException(`Não achou o representante de id #${id}`);
+    }
+    return this.representanteRepository.create({ ...representante, ...updateRepresentanteDto });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} representante`;
+  async remove(id: number) {
+    const representante = await this.representanteRepository.findOne({ where: { representante_id: id } })
   }
 }
