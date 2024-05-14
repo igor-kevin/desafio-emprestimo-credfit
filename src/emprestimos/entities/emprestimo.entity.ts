@@ -10,6 +10,9 @@ export class Emprestimo {
     date: Date;
 
     @Column()
+    valor: number;
+
+    @Column()
     parcelas: number;
 
     @Column()
