@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateEmprestimoDto } from './dto/create-emprestimo.dto';
 import { UpdateEmprestimoDto } from './dto/update-emprestimo.dto';
+import { LogicaEmprestimoService } from './logicaemprestimo.service';
 
 @Injectable()
 export class EmprestimosService {
