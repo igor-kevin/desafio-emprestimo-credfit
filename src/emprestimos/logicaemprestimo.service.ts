@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotAcceptableException } from "@nestjs/common";
 import axios from 'axios';
 import { Funcionario } from "src/funcionarios/entities/funcionario.entity";
 
@@ -8,7 +8,12 @@ export class LogicaEmprestimoService {
     async checkaAprovado(funcionario: Funcionario): Promise<boolean> {
         const score_funcionario = await this.getScore(funcionario);
         const scoreAprovacao = this.getMinScore(funcionario.funcionario_salario);
-        return score_funcionario > scoreAprovacao;
+        console.log(scoreAprovacao)
+        console.log(`Esse é o score do funcionario: ${score_funcionario}, tem que ser maior que aprovação ${scoreAprovacao}:\n Resultado é:${score_funcionario > +scoreAprovacao}`)
+        if (scoreAprovacao == -1) {
+            throw new Error('Salário acima de R$12000,00. Inválido para score.');
+        }
+        return (score_funcionario > scoreAprovacao);
     }
 
 
@@ -36,5 +41,9 @@ export class LogicaEmprestimoService {
         return score.data.score;
     }
 
+    async getStatus(): Promise<boolean> {
+        const emprestimoStatus = await axios.get('https://run.mocky.io/v3/ed999ce0-d115-4f73-b098-6277aabbd144')
+        return emprestimoStatus.data.ok;
+    }
 
 }

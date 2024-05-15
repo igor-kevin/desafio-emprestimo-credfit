@@ -3,11 +3,9 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Emprestimo {
+
     @PrimaryGeneratedColumn()
     emprestimo_id: number;
-
-    @Column()
-    date: Date;
 
     @Column()
     valor: number;
@@ -19,7 +17,7 @@ export class Emprestimo {
     primeiroPagamento: Date;
 
     @Column()
-    status: boolean;
+    emprestimoStatus: boolean;
 
     @ManyToOne(() => Funcionario, (funcionario) => funcionario.emprestimo)
     funcionario: Funcionario;
