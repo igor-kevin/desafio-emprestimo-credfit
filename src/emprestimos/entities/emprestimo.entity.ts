@@ -16,7 +16,7 @@ export class Emprestimo {
     parcelas: number;
 
     @Column()
-    proxPagamento: Date;
+    primeiroPagamento: Date;
 
     @Column()
     status: boolean;
