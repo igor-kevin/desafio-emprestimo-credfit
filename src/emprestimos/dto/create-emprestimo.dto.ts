@@ -5,6 +5,6 @@ export class CreateEmprestimoDto {
     valor: number;
     parcelas: number;
     status: boolean;
-    datas_pagamento: Date[];
+    proxPagamento: Date;
     funcionario: Funcionario;
 }

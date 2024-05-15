@@ -16,6 +16,9 @@ export class Emprestimo {
     parcelas: number;
 
     @Column()
+    proxPagamento: Date;
+
+    @Column()
     status: boolean;
 
     @ManyToOne(() => Funcionario, (funcionario) => funcionario.emprestimo)
