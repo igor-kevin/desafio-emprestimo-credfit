@@ -6,10 +6,9 @@ function App() {
     <>
       <Cabecalho />
       <BarraDeArrasta />
-      <BarraDeArrasta />
-      <BarraDeArrasta />
-      <BarraDeArrasta />
-      <BarraDeArrasta />
+      <div className="container d-flex justify-content-center align-items-center min-vh-100">
+        <div className="quadrado-central">xd</div>
+      </div>
     </>
   );
 }
