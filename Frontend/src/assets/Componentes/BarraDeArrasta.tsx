@@ -12,7 +12,7 @@ function BarraDeArrasta() {
       <input
         type="range"
         min="0"
-        max="100000"
+        max="8000.00"
         value={valor}
         onChange={handleArrasta}
       />

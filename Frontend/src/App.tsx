@@ -6,6 +6,10 @@ function App() {
     <>
       <Cabecalho />
       <BarraDeArrasta />
+      <BarraDeArrasta />
+      <BarraDeArrasta />
+      <BarraDeArrasta />
+      <BarraDeArrasta />
     </>
   );
 }
