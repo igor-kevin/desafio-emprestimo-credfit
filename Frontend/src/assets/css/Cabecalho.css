@@ -1,0 +1,17 @@
+
+.cabecalho-barra {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: navy;
+    padding: 10px;
+  }
+  
+  .cabecalho-esquerda {
+    font-weight: bold;
+    color:white
+  }
+  
+  .cabecalho-direita {
+    color:white;
+  }
