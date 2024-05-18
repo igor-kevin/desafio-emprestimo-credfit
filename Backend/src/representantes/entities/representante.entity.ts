@@ -12,18 +12,6 @@ export class Representante {
     @Column()
     representante_nome_social: string;
 
-    @Column()
-    representante_nome: string;
-
-    @Column({ unique: true })
-    representante_cpf: number;
-
-    @Column({ unique: true })
-    representante_email: string;
-
-    @Column()
-    representante_senha: string;
-
     @OneToMany(() => Funcionario, (funcionario) => funcionario.empresa)
     empresa: Representante;
 }
