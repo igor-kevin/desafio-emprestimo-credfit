@@ -17,9 +17,14 @@ const App: React.FC = () => {
     loadC();
   }, []);
 
+  async function handleGetRep() {
+    const representantes = await api.get("/representantes");
+    console.log(representantes.data);
+  }
+
   async function loadC() {
     const response = await api.get("/representantes");
-    console.log(response);
+    console.log(response.data);
   }
 
   const handleArrasta = (novoValor: number) => {
@@ -62,7 +67,7 @@ const App: React.FC = () => {
         <CampoValor value={valor} />
         <BarraDeArrasta valor={valor} onArrasta={handleArrasta} />
       </QuadroCentral>
-      <Botoes onVoltar={handleVoltar} onSimular={handleSimular} />
+      <Botoes onVoltar={handleGetRep} onSimular={handleSimular} />
       <Teste />
     </>
   );

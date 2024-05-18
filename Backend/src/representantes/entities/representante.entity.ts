@@ -10,6 +10,9 @@ export class Representante {
     representante_cnpj: number;
 
     @Column()
+    representante_nome_social: string;
+
+    @Column()
     representante_nome: string;
 
     @Column({ unique: true })
