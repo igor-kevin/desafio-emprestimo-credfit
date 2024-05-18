@@ -1,24 +1,30 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { ChangeEvent } from "react";
 
-function BarraDeArrasta() {
-  const [valor, onUpdate] = useState(0);
+interface BarraDeArrastaProps {
+  valor: number;
+  onArrasta: (novoValor: number) => void;
+}
 
+const BarraDeArrasta: React.FC<BarraDeArrastaProps> = ({
+  valor,
+  onArrasta,
+}) => {
   const handleArrasta = (event: ChangeEvent<HTMLInputElement>) => {
-    onUpdate(parseInt(event.target.value));
+    onArrasta(parseInt(event.target.value));
   };
 
   return (
-    <div className="barradearrasta-container">
+    <div className="barradearrasta-container d-flex justify-content-center">
       <input
         type="range"
         min="0"
-        max="8000.00"
+        max="800000.00"
         value={valor}
         onChange={handleArrasta}
       />
-      <div>R${valor}</div>
+      <div>R${(valor / 100).toFixed(2)}</div>
     </div>
   );
-}
+};
 
 export default BarraDeArrasta;
