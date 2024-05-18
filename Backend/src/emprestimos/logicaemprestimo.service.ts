@@ -24,6 +24,15 @@ export class LogicaEmprestimoService {
         return false;
     }
 
+    isDentroDoBolso(funcionario: Funcionario, valor: number, parcelas: number): boolean {
+        const salario = funcionario.funcionario_salario * 0.35
+        let porcentagemValor = (valor / parcelas)
+        if ((porcentagemValor > salario)) {
+            return false;
+        }
+        return true;
+    }
+
     private getMinScore(salario: number): number {
         switch (true) {
             case salario <= 2000:

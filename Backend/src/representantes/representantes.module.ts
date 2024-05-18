@@ -10,5 +10,6 @@ import { Representante } from './entities/representante.entity';
   imports: [TypeOrmModule.forFeature([Emprestimo, Funcionario, Representante]),],
   controllers: [RepresentantesController],
   providers: [RepresentantesService],
+  exports: [TypeOrmModule]
 })
 export class RepresentantesModule { }

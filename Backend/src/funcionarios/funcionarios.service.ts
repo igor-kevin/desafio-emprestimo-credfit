@@ -4,16 +4,31 @@ import { UpdateFuncionarioDto } from './dto/update-funcionario.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Funcionario } from './entities/funcionario.entity';
 import { Repository } from 'typeorm';
+import { Representante } from 'src/representantes/entities/representante.entity';
 
 @Injectable()
 export class FuncionariosService {
   constructor(
     @InjectRepository(Funcionario)
-    private readonly funcionarioRepository: Repository<Funcionario>
+    private readonly funcionarioRepository: Repository<Funcionario>,
+
+    @InjectRepository(Representante)
+    private readonly representanteRepository: Repository<Representante>
   ) { }
 
   async create(createFuncionarioDto: CreateFuncionarioDto): Promise<Funcionario> {
     const novoFuncinoario = this.funcionarioRepository.create(createFuncionarioDto)
+    const { representante_id, ...funcionarioData } = createFuncionarioDto;
+
+    const representante = await this.representanteRepository.findOne({ where: { representante_id: representante_id } })
+    if (!representante) {
+      throw new NotFoundException(`Não encontrei o representante com id:${representante_id}`);
+    }
+    console.log(representante.representante_cnpj)
+    const novoFuncionario = this.funcionarioRepository.create({
+      ...funcionarioData,
+      empresa: representante,
+    })
 
     try {
       return await this.funcionarioRepository.save(novoFuncinoario);
@@ -38,6 +53,7 @@ export class FuncionariosService {
     if (!funcionario) {
       throw new NotFoundException(`Não foi possível acessar o funcionario de id ${id}`)
     }
+    console.log(funcionario.empresa)
     return funcionario;
   }
 
