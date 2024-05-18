@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateFuncionarioDto } from './dto/create-funcionario.dto';
 import { UpdateFuncionarioDto } from './dto/update-funcionario.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,9 +12,22 @@ export class FuncionariosService {
     private readonly funcionarioRepository: Repository<Funcionario>
   ) { }
 
-  create(createFuncionarioDto: CreateFuncionarioDto): Promise<Funcionario> {
-    return this.funcionarioRepository.save(createFuncionarioDto);
+  async create(createFuncionarioDto: CreateFuncionarioDto): Promise<Funcionario> {
+    const novoFuncinoario = this.funcionarioRepository.create(createFuncionarioDto)
+
+    try {
+      return await this.funcionarioRepository.save(novoFuncinoario);
+    } catch (error) {
+      // 23505 é o erro do postgre
+      if (error.code === '23505') {
+        throw new ConflictException('Já existe um representante com algum esses dados que eram para ser unique.');
+      } else {
+        throw error;
+      }
+    }
   }
+
+
 
   findAll(): Promise<Funcionario[]> {
     return this.funcionarioRepository.find();

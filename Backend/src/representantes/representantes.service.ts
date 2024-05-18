@@ -15,15 +15,17 @@ export class RepresentantesService {
   async create(createRepresentanteDto: CreateRepresentanteDto) {
     const novoRepresentante = this.representanteRepository.create(createRepresentanteDto);
 
- try {
+    try {
       return await this.representanteRepository.save(novoRepresentante);
     } catch (error) {
-      if (error.code === '23505') { // Código de erro de violação de unicidade no PostgreSQL
+      // 23505 é o erro do postgre
+      if (error.code === '23505') {
         throw new ConflictException('Já existe um representante com algum esses dados que eram para ser unique.');
       } else {
         throw error;
+      }
+    }
   }
-  }}
 
   async findAll(): Promise<Representante[]> {
     return await this.representanteRepository.find();
@@ -47,7 +49,7 @@ export class RepresentantesService {
       return this.representanteRepository.create({ ...representante, ...updateRepresentanteDto });
     } catch (error) {
       // 23505 é o erro do postgre
-      if (error.code === '23505') { 
+      if (error.code === '23505') {
         throw new ConflictException('Já existe um representante com algum esses dados que eram para ser unique.');
       } else {
         throw error;
