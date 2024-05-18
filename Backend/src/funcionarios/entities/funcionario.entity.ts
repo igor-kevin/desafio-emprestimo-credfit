@@ -10,6 +10,9 @@ export class Funcionario {
     @Column()
     funcionario_nome: string;
 
+    @Column({ unique:true })
+    funcionario_cpf: number;
+
     @Column({ unique: true })
     funcionario_email: string;
 

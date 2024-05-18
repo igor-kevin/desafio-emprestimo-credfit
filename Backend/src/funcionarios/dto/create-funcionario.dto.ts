@@ -3,6 +3,8 @@ import { Representante } from "src/representantes/entities/representante.entity"
 export class CreateFuncionarioDto {
 
     funcionario_nome: string;
+    
+    funcionario_cpf: number;
 
     funcionario_email: string;
 

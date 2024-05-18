@@ -1,6 +1,7 @@
 import { Injectable, NotAcceptableException } from "@nestjs/common";
 import axios from 'axios';
 import { Funcionario } from "src/funcionarios/entities/funcionario.entity";
+import { FuncionariosService } from "src/funcionarios/funcionarios.service";
 
 @Injectable()
 export class LogicaEmprestimoService {
@@ -16,6 +17,12 @@ export class LogicaEmprestimoService {
         return (score_funcionario > scoreAprovacao);
     }
 
+    isConveniado(funcionario: Funcionario): boolean {
+        if (funcionario.empresa != null) {
+            return true
+        }
+        return false;
+    }
 
     private getMinScore(salario: number): number {
         switch (true) {
