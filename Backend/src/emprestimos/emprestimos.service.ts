@@ -6,21 +6,25 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Emprestimo } from './entities/emprestimo.entity';
 import { Repository } from 'typeorm';
 import { Funcionario } from 'src/funcionarios/entities/funcionario.entity';
-import { FuncionariosService } from 'src/funcionarios/funcionarios.service';
 
 @Injectable()
 export class EmprestimosService {
   constructor(
     @InjectRepository(Emprestimo)
     private readonly emprestimoRepository: Repository<Emprestimo>,
+
+    @InjectRepository(Funcionario)
+    private readonly funcionarioRepository: Repository<Funcionario>,
+
     private readonly logica: LogicaEmprestimoService,
-    private readonly funcionarioService: FuncionariosService
 
   ) { }
 
 
   async create(createEmprestimoDto: CreateEmprestimoDto) {
-    const funcionario: Funcionario = createEmprestimoDto.funcionario;
+
+    const funcionario: Funcionario = await this.funcionarioRepository.findOne({ where: { funcionario_id: createEmprestimoDto.funcionario_id } });
+    console.log(funcionario);
     if (!this.logica.isConveniado(funcionario)) {
       return "Não foi feito o empréstimo, pois não é um funcionário de uma empresa conveniada."
     }

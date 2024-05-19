@@ -5,5 +5,5 @@ export class CreateEmprestimoDto {
     parcelas: number;
     emprestimoStatus: boolean;
     primeiroPagamento: Date;
-    funcionario: Funcionario;
+    funcionario_id: number;
 }
