@@ -17,7 +17,7 @@ const App: React.FC = () => {
   const [valor, setValor] = useState<number>(0);
   const [parcelas, setParcelas] = useState(0);
 
-  async function carregaFuncNome() {
+  async function carregaFuncionarioNome() {
     try {
       const nome = await api.get("funcionarios/5");
       setFuncionarioNome(nome.data.funcionario_nome);
