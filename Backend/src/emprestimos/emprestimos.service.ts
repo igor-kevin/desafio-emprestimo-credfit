@@ -57,8 +57,9 @@ export class EmprestimosService {
     const proxPagamento = new Date(hoje.getFullYear(), hoje.getMonth() + 1, hoje.getDay());
     return proxPagamento;
   }
+
   findAll() {
-    return `This action returns all emprestimos`;
+    return this.emprestimoRepository.find();
   }
 
   findOne(id: number) {
