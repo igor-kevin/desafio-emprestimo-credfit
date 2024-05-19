@@ -19,7 +19,7 @@ const App: React.FC = () => {
 
   async function carregaFuncionarioNome() {
     try {
-      const nome = await api.get("funcionarios/5");
+      const nome = await api.get("funcionarios/3");
       setFuncionarioNome(nome.data.funcionario_nome);
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
@@ -28,7 +28,7 @@ const App: React.FC = () => {
 
   async function carregaRepresentante() {
     try {
-      const resposta = await api.get("representantes/6");
+      const resposta = await api.get("representantes/3");
       setRepresentante(resposta.data.representante_nome_social);
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
@@ -47,6 +47,7 @@ const App: React.FC = () => {
   }
   useEffect(() => {
     carregaRepresentante();
+    carregaFuncionarioNome();
   }, []);
 
   const handleArrasta = (novoValor: number) => {
@@ -72,7 +73,7 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Cabecalho usuario={"PALCEHOLDER"} />
+      <Cabecalho usuario={funcionarioNome} />
       <div className="container" style={{ backgroundSize: "100va" }}>
         <Diretorios />
         <QuadroCentral>
@@ -96,7 +97,7 @@ const App: React.FC = () => {
         />
       </div>
       {/* <Teste /> */}
-      <Cabecalho usuario={"PALCEHOLDER"} />
+      <Cabecalho usuario={funcionarioNome} />
       <Diretorios />
       <QuadroCentral>
         <h5>
@@ -125,7 +126,7 @@ const App: React.FC = () => {
 //
 //
 // */}
-      <Cabecalho usuario={"PALCEHOLDER"} />
+      <Cabecalho usuario={funcionarioNome} />
       <div className="container">
         <Diretorios />
         <QuadroCentral>
