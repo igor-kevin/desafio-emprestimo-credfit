@@ -1,9 +1,10 @@
 interface BotoesProps {
   onVoltar: () => void;
   onSimular: () => void;
+  nome: string;
 }
 
-const Botoes: React.FC<BotoesProps> = ({ onVoltar, onSimular }) => {
+const Botoes: React.FC<BotoesProps> = ({ onVoltar, onSimular, nome }) => {
   return (
     <div className="d-flex justify-content-center mt-4">
       <button
@@ -22,7 +23,7 @@ const Botoes: React.FC<BotoesProps> = ({ onVoltar, onSimular }) => {
         onClick={onSimular}
         style={{ backgroundColor: "CadetBlue", borderColor: "CadetBlue" }}
       >
-        Simular Empréstimo
+        {nome}
       </button>
     </div>
   );

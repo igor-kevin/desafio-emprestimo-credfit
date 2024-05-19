@@ -18,11 +18,10 @@ const BarraDeArrasta: React.FC<BarraDeArrastaProps> = ({
       <input
         type="range"
         min="0"
-        max="800000.00"
+        max="2000000.00"
         value={valor}
         onChange={handleArrasta}
       />
-      <div>R${(valor / 100).toFixed(2)}</div>
     </div>
   );
 };

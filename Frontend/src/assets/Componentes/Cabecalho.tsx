@@ -2,7 +2,11 @@ import "../css/Cabecalho.css";
 import logo from "C:/Users/Igor/Documents/desafio-emprestimo-credfit/Frontend/src/assets/Imagens/Credfitlogo.svg";
 import usuarioImage from "C:/Users/Igor/Documents/desafio-emprestimo-credfit/Frontend/src/assets/Imagens/userImage.svg";
 
-const Cabecalho = () => {
+interface CabecalhoProps {
+  usuario: string;
+}
+
+const Cabecalho = ({ usuario }: CabecalhoProps) => {
   return (
     <header>
       <div className="cabecalho-barra">
@@ -19,7 +23,7 @@ const Cabecalho = () => {
             alt="Usuario"
             style={{ width: "auto", height: "27px" }}
           />
-          Nome do Usuario
+          {usuario}
         </div>
       </div>
     </header>
