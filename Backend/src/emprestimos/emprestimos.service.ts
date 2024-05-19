@@ -27,9 +27,10 @@ export class EmprestimosService {
 
   async create(createEmprestimoDto: CreateEmprestimoDto) {
 
-    const funcionario: Funcionario = await this.funcionarioRepository.findOne({ where: { funcionario_id: createEmprestimoDto.funcionario_id } });
+    const funcionario: Funcionario = await this.funcionarioRepository.findOne({ where: { funcionario_id: createEmprestimoDto.funcionario_id }, relations: ['empresa'] });
     console.log(funcionario);
     console.log("Empresa: " + funcionario.empresa)
+    console.log("SERÁ MESMO: " + funcionario.empresa.representante_nome_social)
 
 
     // if (!this.logica.isConveniado(funcionario)) {
