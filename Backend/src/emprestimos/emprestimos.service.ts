@@ -62,9 +62,12 @@ export class EmprestimosService {
     return this.emprestimoRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} emprestimo`;
+  findEmprestimosPorFuncionario(funcionario_id: number): Promise<Emprestimo[]> {
+    return this.emprestimoRepository.find({
+      where: { funcionario: { funcionario_id: funcionario_id } }
+    });
   }
+
 
   update(id: number, updateEmprestimoDto: UpdateEmprestimoDto) {
     return `This action updates a #${id} emprestimo`;
