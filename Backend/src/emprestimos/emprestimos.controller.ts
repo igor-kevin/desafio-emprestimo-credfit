@@ -11,8 +11,8 @@ export class EmprestimosController {
   ) { }
 
   @Post()
-  create(@Body() createEmprestimoDto: CreateEmprestimoDto, funcionario: Repository<Funcionario>) {
-    return this.emprestimosService.create(createEmprestimoDto, funcionario);
+  create(@Body() createEmprestimoDto: CreateEmprestimoDto) {
+    return this.emprestimosService.create(createEmprestimoDto);
   }
 
   @Get()

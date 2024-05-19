@@ -19,7 +19,7 @@ export class EmprestimosService {
   ) { }
 
 
-  async create(createEmprestimoDto: CreateEmprestimoDto, funcionarioRepository: Repository<Funcionario>) {
+  async create(createEmprestimoDto: CreateEmprestimoDto) {
     const funcionario: Funcionario = createEmprestimoDto.funcionario;
     if (!this.logica.isConveniado(funcionario)) {
       return "Não foi feito o empréstimo, pois não é um funcionário de uma empresa conveniada."

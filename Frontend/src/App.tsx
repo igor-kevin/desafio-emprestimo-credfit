@@ -124,7 +124,7 @@ const App: React.FC = () => {
           <div className="d-flex justify-content-center mt-4"></div>
         </QuadroCentral>
         <Botoes
-          onSimular={geraEmprestimo(1)}
+          onSimular={handleFinal}
           onVoltar={handleVoltar}
           nome="Solicitar empréstimo"
         />

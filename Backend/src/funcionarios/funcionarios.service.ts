@@ -17,21 +17,19 @@ export class FuncionariosService {
   ) { }
 
   async create(createFuncionarioDto: CreateFuncionarioDto): Promise<Funcionario> {
-    const novoFuncinoario = this.funcionarioRepository.create(createFuncionarioDto)
-    const { representante_id, ...funcionarioData } = createFuncionarioDto;
 
-    const representante = await this.representanteRepository.findOne({ where: { representante_id: representante_id } })
+    const { representante_id, ...funcionarioData } = createFuncionarioDto;
+    const representante = await this.representanteRepository.findOne({ where: { representante_id } })
     if (!representante) {
       throw new NotFoundException(`Não encontrei o representante com id:${representante_id}`);
     }
-    console.log(representante.representante_cnpj)
     const novoFuncionario = this.funcionarioRepository.create({
       ...funcionarioData,
       empresa: representante,
     })
 
     try {
-      return await this.funcionarioRepository.save(novoFuncinoario);
+      return await this.funcionarioRepository.save(novoFuncionario);
     } catch (error) {
       // 23505 é o erro do postgre
       if (error.code === '23505') {

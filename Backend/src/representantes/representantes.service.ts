@@ -13,18 +13,18 @@ export class RepresentantesService {
   ) { }
 
   async create(createRepresentanteDto: CreateRepresentanteDto) {
-    const novoRepresentante = this.representanteRepository.create(createRepresentanteDto);
+    const { representante_cnpj, representante_razao_social } = createRepresentanteDto;
 
-    try {
-      return await this.representanteRepository.save(novoRepresentante);
-    } catch (error) {
-      // 23505 é o erro do postgre
-      if (error.code === '23505') {
-        throw new ConflictException('Já existe um representante com algum esses dados que eram para ser unique.');
-      } else {
-        throw error;
-      }
+    const representanteExists = await this.representanteRepository.findOne({
+      where: [{ representante_cnpj: representante_cnpj }, { representante_nome_social: representante_razao_social }]
+    });
+
+    if (representanteExists) {
+      throw new ConflictException('Já existe um representante com esses dados.');
     }
+
+    const novoRepresentante = this.representanteRepository.create(createRepresentanteDto);
+    return await this.representanteRepository.save(novoRepresentante);
   }
 
   async findAll(): Promise<Representante[]> {
