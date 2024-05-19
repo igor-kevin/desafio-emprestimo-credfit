@@ -28,10 +28,9 @@ const App: React.FC = () => {
   async function geraEmprestimo(idFuncionario: number) {
     try {
       const resposta = await api.post("/emprestimo", {
-        valor: valor,
+        valor: valor / 100,
         parcelas: parcelas,
         emprestimoStatus: true,
-        primeiroPagamento: 1,
         funcionario_id: idFuncionario,
       });
     } catch (error) {}

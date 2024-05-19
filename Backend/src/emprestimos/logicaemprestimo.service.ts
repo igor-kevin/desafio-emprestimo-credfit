@@ -1,6 +1,5 @@
 import { Injectable, NotAcceptableException } from "@nestjs/common";
 import axios from 'axios';
-import { CreateFuncionarioDto } from "src/funcionarios/dto/create-funcionario.dto";
 import { Funcionario } from "src/funcionarios/entities/funcionario.entity";
 import { FuncionariosService } from "src/funcionarios/funcionarios.service";
 
