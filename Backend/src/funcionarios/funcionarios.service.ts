@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateFuncionarioDto } from './dto/create-funcionario.dto';
 import { UpdateFuncionarioDto } from './dto/update-funcionario.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -41,6 +41,21 @@ export class FuncionariosService {
   }
 
 
+  async findEmpresa(representante_id): Promise<number> {
+    try {
+      const representante = await this.representanteRepository.findOne({ where: { representante_id: representante_id } })
+      if (!representante) {
+        throw new NotFoundException(`Não encontrei o representante com id:${representante_id}`);
+      }
+      return representante.representante_id;
+    }
+    catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('Erro na busca da empresa do funcionario.')
+    }
+  }
 
   findAll(): Promise<Funcionario[]> {
     return this.funcionarioRepository.find();

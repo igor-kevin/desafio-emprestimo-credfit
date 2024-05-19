@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Emprestimo } from './entities/emprestimo.entity';
 import { Repository } from 'typeorm';
 import { Funcionario } from 'src/funcionarios/entities/funcionario.entity';
+import { Representante } from 'src/representantes/entities/representante.entity';
 
 @Injectable()
 export class EmprestimosService {
@@ -16,6 +17,9 @@ export class EmprestimosService {
     @InjectRepository(Funcionario)
     private readonly funcionarioRepository: Repository<Funcionario>,
 
+    @InjectRepository(Representante)
+    private readonly representanteRepository: Repository<Representante>,
+
     private readonly logica: LogicaEmprestimoService,
 
   ) { }
@@ -25,9 +29,13 @@ export class EmprestimosService {
 
     const funcionario: Funcionario = await this.funcionarioRepository.findOne({ where: { funcionario_id: createEmprestimoDto.funcionario_id } });
     console.log(funcionario);
+    console.log("Empresa: " + funcionario.empresa)
+
+
     if (!this.logica.isConveniado(funcionario)) {
       return "Não foi feito o empréstimo, pois não é um funcionário de uma empresa conveniada."
     }
+
     if (!this.logica.isDentroDoBolso(funcionario, createEmprestimoDto.valor, createEmprestimoDto.parcelas)) {
       return `A parcela está acima do aceito para o seu salário. \n R$${((funcionario.funcionario_salario) * 0.35).toFixed(2)} é o máximo para cada uma das suas parcelas.\n A que você está tentando é R$${createEmprestimoDto.valor / createEmprestimoDto.parcelas}`
     }
