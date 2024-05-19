@@ -41,7 +41,7 @@ export class FuncionariosService {
   }
 
 
-  async findEmpresa(representante_id): Promise<number> {
+  async getEmpresa(representante_id): Promise<number> {
     try {
       const representante = await this.representanteRepository.findOne({ where: { representante_id: representante_id } })
       if (!representante) {

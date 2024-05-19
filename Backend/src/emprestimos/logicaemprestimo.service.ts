@@ -1,10 +1,16 @@
 import { Injectable, NotAcceptableException } from "@nestjs/common";
 import axios from 'axios';
+import { CreateFuncionarioDto } from "src/funcionarios/dto/create-funcionario.dto";
 import { Funcionario } from "src/funcionarios/entities/funcionario.entity";
 import { FuncionariosService } from "src/funcionarios/funcionarios.service";
 
 @Injectable()
 export class LogicaEmprestimoService {
+    constructor(private readonly funcService: FuncionariosService) {
+
+    }
+
+
 
     async checkaAprovado(funcionario: Funcionario): Promise<boolean> {
         const score_funcionario = await this.getScore(funcionario);
@@ -17,6 +23,7 @@ export class LogicaEmprestimoService {
         return (score_funcionario > scoreAprovacao);
     }
 
+    // temporariamente(espero) não utilizado
     isConveniado(funcionario: Funcionario): boolean {
         if (funcionario.empresa != null) {
             return true

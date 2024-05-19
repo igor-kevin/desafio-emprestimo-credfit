@@ -32,11 +32,11 @@ export class EmprestimosService {
     console.log("Empresa: " + funcionario.empresa)
 
 
-    if (!this.logica.isConveniado(funcionario)) {
-      return "Não foi feito o empréstimo, pois não é um funcionário de uma empresa conveniada."
-    }
+    // if (!this.logica.isConveniado(funcionario)) {
+    //   return "Não foi feito o empréstimo, pois não é um funcionário de uma empresa conveniada."
+    // }
 
-    if (!this.logica.isDentroDoBolso(funcionario, createEmprestimoDto.valor, createEmprestimoDto.parcelas)) {
+    if (!this.logica.isDentroDoBolso(funcionario, (createEmprestimoDto.valor * 100), createEmprestimoDto.parcelas)) {
       return `A parcela está acima do aceito para o seu salário. \n R$${((funcionario.funcionario_salario) * 0.35).toFixed(2)} é o máximo para cada uma das suas parcelas.\n A que você está tentando é R$${createEmprestimoDto.valor / createEmprestimoDto.parcelas}`
     }
     try {
