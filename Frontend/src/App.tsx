@@ -11,19 +11,29 @@ import EscolhaParcelas from "./assets/Componentes/EscolhaParcelas";
 import ResumoSimulacao from "./assets/Componentes/ResumoSimulacao";
 
 const App: React.FC = () => {
+  //declaração dos estados
   const [representante, setRepresentante] = useState(1);
+  const [funcionarioNome, setFuncionarioNome] = useState();
+  const [valor, setValor] = useState<number>(0);
+  const [parcelas, setParcelas] = useState(0);
 
-  async function carregaRepresentante() {
+  async function carregaFuncNome() {
     try {
-      const resposta = await api.get("representantes/1");
-      setRepresentante(resposta.data.representante_nome_social);
+      const nome = await api.get("funcionarios/5");
+      setFuncionarioNome(nome.data.funcionario_nome);
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
     }
   }
 
-  const [valor, setValor] = useState<number>(0);
-  const [parcelas, setParcelas] = useState(0);
+  async function carregaRepresentante() {
+    try {
+      const resposta = await api.get("representantes/6");
+      setRepresentante(resposta.data.representante_nome_social);
+    } catch (error) {
+      console.error("Erro ao carregar dados:", error);
+    }
+  }
 
   async function geraEmprestimo(idFuncionario: number) {
     try {
