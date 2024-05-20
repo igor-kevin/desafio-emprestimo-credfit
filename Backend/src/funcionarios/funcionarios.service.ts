@@ -6,6 +6,8 @@ import { Funcionario } from './entities/funcionario.entity';
 import { Repository } from 'typeorm';
 import { Representante } from 'src/representantes/entities/representante.entity';
 
+
+
 @Injectable()
 export class FuncionariosService {
   constructor(
@@ -41,6 +43,23 @@ export class FuncionariosService {
   }
 
 
+  async getEmpresaDoFuncionario(funcionario: Funcionario): Promise<number> {
+    try {
+      const representante = await this.representanteRepository.findOne({ where: { representante_id: funcionario.empresa.representante_id } })
+      console.log(representante)
+      if (!representante) {
+        throw new NotFoundException(`Não encontrei o representante com id:${funcionario.empresa.representante_id}`);
+      }
+      return representante.representante_id;
+    }
+    catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('Erro na busca da empresa do funcionario.')
+    }
+  }
+
   async getEmpresa(representante_id): Promise<number> {
     try {
       const representante = await this.representanteRepository.findOne({ where: { representante_id: representante_id } })
@@ -62,7 +81,12 @@ export class FuncionariosService {
   }
 
   async findOne(id: number): Promise<Funcionario> {
-    const funcionario = await this.funcionarioRepository.findOne({ where: { funcionario_id: id } })
+    console.log('findone xd');
+
+    const funcionario = await this.funcionarioRepository.findOne({ where: { funcionario_id: id }, relations: ["empresa"] });
+    console.log(funcionario.empresa)
+    console.log('funcionario: ' + funcionario.empresa.representante_id);
+
     if (!funcionario) {
       throw new NotFoundException(`Não foi possível acessar o funcionario de id ${id}`)
     }

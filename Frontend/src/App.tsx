@@ -13,22 +13,17 @@ import ResumoSimulacao from "./assets/Componentes/ResumoSimulacao";
 const App: React.FC = () => {
   //declaração dos estados
   const [representante, setRepresentante] = useState(1);
-  const [funcionarioNome, setFuncionarioNome] = useState();
+  const [funcionarioNome, setFuncionarioNome] = useState(1);
   const [valor, setValor] = useState<number>(0);
-  const [parcelas, setParcelas] = useState(0);
+  const [parcelas, setParcelas] = useState(1);
 
   async function carregaFuncionarioNome() {
     try {
-      const nome = await api.get("funcionarios/3");
+      const nome = await api.get("funcionarios/2");
       setFuncionarioNome(nome.data.funcionario_nome);
-    } catch (error) {
-      console.error("Erro ao carregar dados:", error);
-    }
-  }
+      console.log(nome.data);
 
-  async function carregaRepresentante() {
-    try {
-      const resposta = await api.get("representantes/3");
+      const resposta = await api.get(`representantes/${}`);
       setRepresentante(resposta.data.representante_nome_social);
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
@@ -46,7 +41,6 @@ const App: React.FC = () => {
     } catch (error) {}
   }
   useEffect(() => {
-    carregaRepresentante();
     carregaFuncionarioNome();
   }, []);
 
@@ -153,7 +147,7 @@ const App: React.FC = () => {
           </Alerta>
         </QuadroCentral>
         <Botoes
-          onSimular={handleFinal}
+          onSimular={handleVoltar}
           onVoltar={handleVoltar}
           nome="Novo Empréstimo"
         />

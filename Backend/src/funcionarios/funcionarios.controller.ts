@@ -22,6 +22,12 @@ export class FuncionariosController {
     return this.funcionariosService.findOne(+id);
   }
 
+  @Get('empregado/:id')
+  async findEmpresa(@Param('id') id: string) {
+    const funcionario = await this.funcionariosService.findOne(+id);
+    return await this.funcionariosService.getEmpresaDoFuncionario(funcionario);
+  }
+
   @Put(':id')
   update(@Param('id') id: string, @Body() updateFuncionarioDto: UpdateFuncionarioDto) {
     return this.funcionariosService.update(+id, updateFuncionarioDto);
