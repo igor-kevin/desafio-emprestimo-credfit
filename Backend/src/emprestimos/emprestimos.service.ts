@@ -76,6 +76,7 @@ export class EmprestimosService {
 
   }
 
+
   private proxVencimento(): Date {
     const hoje = new Date();
     const proxPagamento = new Date(hoje.getFullYear(), hoje.getMonth() + 1, hoje.getDate());
