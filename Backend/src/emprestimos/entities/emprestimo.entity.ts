@@ -16,8 +16,13 @@ export class Emprestimo {
     @Column()
     primeiroPagamento: Date;
 
+    // Caso o empréstimo não seja aceito retorna o motivo.
     @Column()
-    emprestimoStatus: boolean;
+    emprestimoStatus: number;
+
+
+    @Column()
+    isEmprestimoEntregue: boolean;
 
     @ManyToOne(() => Funcionario, (funcionario) => funcionario.emprestimo)
     @JoinColumn({ name: 'funcionario_id' })
