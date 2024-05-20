@@ -139,6 +139,25 @@ const App: React.FC = () => {
           nome="Solicitar empréstimo"
         />
       </div>
+      {/* //
+//
+//
+// */}
+      <Cabecalho usuario={funcionarioNome} />
+      <div className="container">
+        <Diretorios />
+        <QuadroCentral>
+          <Alerta>
+            Você solicitou o empréstimo! Aguarde as etapas de análises serem
+            concluidas!
+          </Alerta>
+        </QuadroCentral>
+        <Botoes
+          onSimular={handleFinal}
+          onVoltar={handleVoltar}
+          nome="Novo Empréstimo"
+        />
+      </div>
     </>
   );
 };

@@ -20,6 +20,11 @@ export class EmprestimosController {
     return this.emprestimosService.findAll();
   }
 
+  @Get('/funcionario/:id')
+  findEmprestimosPorFuncionario(@Param('id') id: number) {
+    return this.emprestimosService.findEmprestimosPorFuncionario(id);
+  }
+
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updateEmprestimoDto: UpdateEmprestimoDto) {
