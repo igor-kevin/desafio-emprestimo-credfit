@@ -14,7 +14,6 @@ export class LogicaEmprestimoService {
     async checkaAprovado(funcionario: Funcionario): Promise<boolean> {
         const score_funcionario = await this.getScore(funcionario);
         const scoreAprovacao = this.getMinScore(funcionario.funcionario_salario);
-        console.log(scoreAprovacao)
         console.log(`Esse é o score do funcionario: ${score_funcionario}, tem que ser maior que aprovação ${scoreAprovacao}:\n Resultado é:${score_funcionario > +scoreAprovacao}`)
         if (scoreAprovacao == -1) {
             throw new Error('Salário acima de R$12000,00. Inválido para score.');

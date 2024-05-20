@@ -45,8 +45,7 @@ export class FuncionariosService {
 
   async getEmpresaDoFuncionario(funcionario: Funcionario): Promise<number> {
     try {
-      const representante = await this.representanteRepository.findOne({ where: { representante_id: funcionario.empresa.representante_id } })
-      console.log("no get empresadofunc: " + representante.representante_nome_social)
+      const representante = await this.representanteRepository.findOne({ where: { representante_id: funcionario.empresa.representante_id } });
 
 
       if (!representante) {
@@ -89,7 +88,7 @@ export class FuncionariosService {
     if (!funcionario) {
       throw new NotFoundException(`Não foi possível acessar o funcionario de id ${id}`)
     }
-    console.log(funcionario)
+
     return funcionario;
   }
 

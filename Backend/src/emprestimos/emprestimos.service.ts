@@ -7,6 +7,7 @@ import { Emprestimo } from './entities/emprestimo.entity';
 import { Repository } from 'typeorm';
 import { Funcionario } from 'src/funcionarios/entities/funcionario.entity';
 import { Representante } from 'src/representantes/entities/representante.entity';
+import { log } from 'console';
 
 @Injectable()
 export class EmprestimosService {
@@ -26,16 +27,18 @@ export class EmprestimosService {
 
 
   async create(createEmprestimoDto: CreateEmprestimoDto) {
+    console.log('entrei no create emprestimo')
     let checkingEmprestimoStatus: number = 0;
     let statusAtual = false;
     const funcionario: Funcionario = await this.funcionarioRepository.findOne({ where: { funcionario_id: createEmprestimoDto.funcionario_id }, relations: ['empresa'] });
+    console.log('funcionario não deve estar undefined ' + funcionario.funcionario_id)
 
     if (!this.logica.isConveniado(funcionario)) {
       checkingEmprestimoStatus = 1;
       // return "Não foi feito o empréstimo, pois não é um funcionário de uma empresa conveniada."
     }
 
-    if (!this.logica.isDentroDoBolso(funcionario, (createEmprestimoDto.valor), createEmprestimoDto.parcelas)) {
+    if (!this.logica.isDentroDoBolso(funcionario, (createEmprestimoDto.valor / 100), createEmprestimoDto.parcelas)) {
       checkingEmprestimoStatus = 2;
       // return `A parcela está acima do aceito para o seu salário. \n R$${((funcionario.funcionario_salario) * 0.35).toFixed(2)} é o máximo para cada uma das suas parcelas.\n A que você está tentando é R$${createEmprestimoDto.valor / createEmprestimoDto.parcelas}`
     }
@@ -48,25 +51,23 @@ export class EmprestimosService {
       if (checkingEmprestimoStatus != 0) {
         statusAtual = await this.logica.getStatus()
       }
-      console.log("O status é: " + statusAtual)
+
       const emprestimo = {
-        valor: createEmprestimoDto.valor,
+        valor: (createEmprestimoDto.valor),
         parcelas: createEmprestimoDto.parcelas,
         primeiroPagamento: this.proxVencimento(),
         emprestimoStatus: checkingEmprestimoStatus,
         isEmprestimoEntregue: statusAtual,
         funcionario: funcionario,
       }
-      console.log('e', emprestimo)
+      console.log('esse é o valor emprestimo para criar: ' + emprestimo.valor)
+
       const listacompletaemprestimo = await this.findEmprestimosPorFuncionario(funcionario.funcionario_id)
-      for (let emprestimo of listacompletaemprestimo) {
-        console.log(emprestimo);
-      }
 
-      console.log("a lista completa seria: " + listacompletaemprestimo);
+      const emprestimoCompleto = await this.emprestimoRepository.create(emprestimo)
 
-      const emprestimoCompleto = this.emprestimoRepository.create(emprestimo)
-      return await this.emprestimoRepository.save(emprestimoCompleto)
+
+      return this.emprestimoRepository.save(emprestimoCompleto);
 
 
     } catch (error) {
@@ -77,7 +78,7 @@ export class EmprestimosService {
 
   private proxVencimento(): Date {
     const hoje = new Date();
-    const proxPagamento = new Date(hoje.getFullYear(), hoje.getMonth() + 1, hoje.getDay());
+    const proxPagamento = new Date(hoje.getFullYear(), hoje.getMonth() + 1, hoje.getDate());
     return proxPagamento;
   }
 

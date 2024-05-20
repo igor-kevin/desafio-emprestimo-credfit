@@ -9,38 +9,45 @@ import Botoes from "./assets/Componentes/Botoes";
 import { api } from "./services/api";
 import EscolhaParcelas from "./assets/Componentes/EscolhaParcelas";
 import ResumoSimulacao from "./assets/Componentes/ResumoSimulacao";
+import CartaoEmprestimo from "./assets/Componentes/CartaoEmprestimo";
+import RenderizarEmprestimos from "./assets/Componentes/ListaCartaoEmprestimo";
+import ListaCartaoEmprestimo from "./assets/Componentes/ListaCartaoEmprestimo";
 
 const App: React.FC = () => {
   //declaração dos estados
-  const [representante, setRepresentante] = useState(1);
+  const [representante, setRepresentante] = useState();
   const [funcionarioNome, setFuncionarioNome] = useState(1);
+  const [funcionarioId, setFuncionarioID] = useState<number | undefined>();
   const [valor, setValor] = useState<number>(0);
   const [parcelas, setParcelas] = useState(1);
+  const [listaEmprestimo, setListaEmprestimo] = useState([]);
+  const [listaCarregada, setListaCarregada] = useState(false);
 
   async function carregaFuncionarioNome() {
     try {
       const nome = await api.get("funcionarios/4");
       setFuncionarioNome(nome.data.funcionario_nome);
-
-      console.log("empresa do func");
-      console.log("empresa do func" + nome.data.empresa);
-
-      console.log(nome.data.empresa.representante_nome_social);
+      setFuncionarioID(nome.data.funcionario_id);
       setRepresentante(nome.data.empresa.representante_nome_social);
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
     }
   }
 
-  async function geraEmprestimo(idFuncionario: number) {
+  async function geraEmprestimo(funcionarioId: number) {
+    console.log(funcionarioId);
     try {
-      const resposta = await api.post("/emprestimo", {
-        valor: valor / 100,
+      const resposta = await api.post("/emprestimos", {
+        valor: valor,
         parcelas: parcelas,
-        emprestimoStatus: true,
-        funcionario_id: idFuncionario,
+        funcionario_id: funcionarioId,
       });
-    } catch (error) {}
+      console.log(resposta);
+      return resposta;
+    } catch (error) {
+      console.log("error");
+      return error;
+    }
   }
   useEffect(() => {
     carregaFuncionarioNome();
@@ -52,6 +59,8 @@ const App: React.FC = () => {
   };
 
   const handleVoltar = () => {
+    console.log(`Valor: ${valor}, Parcelas: ${parcelas}`);
+    console.log(listaEmprestimo);
     console.log("Voltar clicked");
   };
 
@@ -63,8 +72,24 @@ const App: React.FC = () => {
     console.log("Número de parcelas selecionadas:", parcelas);
   };
 
-  const handleFinal = () => {
+  const handleFinal = async () => {
+    if (funcionarioId === undefined) {
+      console.error("funcionarioId não está definido");
+      return;
+    }
     console.log("Agora é só fazer tudo.");
+    try {
+      const emprestimoFinal = await geraEmprestimo(funcionarioId);
+      console.log("Empréstimo criado com sucesso:", emprestimoFinal);
+      const emprestimosLista = await api.get(
+        `emprestimos/funcionario/${funcionarioId}`
+      );
+      console.log(emprestimosLista.data);
+      setListaEmprestimo(emprestimosLista.data);
+      setListaCarregada(true);
+    } catch (error) {
+      console.error("Erro ao criar empréstimo:", error);
+    }
   };
 
   return (
@@ -147,7 +172,24 @@ const App: React.FC = () => {
             Você solicitou o empréstimo! Aguarde as etapas de análises serem
             concluidas!
           </Alerta>
+          {listaCarregada ? (
+            <div>
+              {listaEmprestimo.map((emprestimo, index) => (
+                <CartaoEmprestimo
+                  key={index}
+                  valor={emprestimo.valor}
+                  representante={representante}
+                  parcelas={emprestimo.parcelas}
+                  codigoDeErro={emprestimo.emprestimoStatus}
+                  proxPagamento={emprestimo.primeiroPagamento}
+                ></CartaoEmprestimo>
+              ))}
+            </div>
+          ) : (
+            <p>Carregando...</p>
+          )}
         </QuadroCentral>
+
         <Botoes
           onSimular={handleVoltar}
           onVoltar={handleVoltar}
