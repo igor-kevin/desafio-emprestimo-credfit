@@ -27,6 +27,7 @@ export class EmprestimosService {
 
   async create(createEmprestimoDto: CreateEmprestimoDto) {
     let checkingEmprestimoStatus: number = 0;
+    let statusAtual = false;
     const funcionario: Funcionario = await this.funcionarioRepository.findOne({ where: { funcionario_id: createEmprestimoDto.funcionario_id }, relations: ['empresa'] });
 
     if (!this.logica.isConveniado(funcionario)) {
@@ -44,7 +45,9 @@ export class EmprestimosService {
         checkingEmprestimoStatus = 3;
         // return "Não foi feito o empréstimo, score muito baixo."
       }
-      let statusAtual: boolean = await this.logica.getStatus()
+      if (checkingEmprestimoStatus != 0) {
+        statusAtual = await this.logica.getStatus()
+      }
       console.log("O status é: " + statusAtual)
       const emprestimo = {
         valor: createEmprestimoDto.valor,
@@ -54,8 +57,16 @@ export class EmprestimosService {
         isEmprestimoEntregue: statusAtual,
         funcionario: funcionario,
       }
-      console.log(emprestimo)
-      return `Emprestimo com sucesso! No valor de R$${emprestimo.valor} em ${emprestimo.parcelas} parcelas. No total de R$${emprestimo.valor / emprestimo.parcelas} por parcela, e o primeiro pagamento em ${emprestimo.primeiroPagamento.getDay()}/${emprestimo.primeiroPagamento.getMonth()}/${emprestimo.primeiroPagamento.getFullYear()}`
+      console.log('e', emprestimo)
+      const listacompletaemprestimo = await this.findEmprestimosPorFuncionario(funcionario.funcionario_id)
+      for (let emprestimo of listacompletaemprestimo) {
+        console.log(emprestimo);
+      }
+
+      console.log("a lista completa seria: " + listacompletaemprestimo);
+
+      const emprestimoCompleto = this.emprestimoRepository.create(emprestimo)
+      return await this.emprestimoRepository.save(emprestimoCompleto)
 
 
     } catch (error) {
@@ -74,10 +85,11 @@ export class EmprestimosService {
     return this.emprestimoRepository.find();
   }
 
-  findEmprestimosPorFuncionario(funcionario_id: number): Promise<Emprestimo[]> {
-    return this.emprestimoRepository.find({
+  async findEmprestimosPorFuncionario(funcionario_id: number): Promise<Emprestimo[]> {
+    const listacompleta = await this.emprestimoRepository.find({
       where: { funcionario: { funcionario_id: funcionario_id } }
     });
+    return listacompleta;
   }
 
 
