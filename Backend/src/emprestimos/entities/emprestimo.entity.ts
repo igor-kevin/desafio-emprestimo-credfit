@@ -1,5 +1,5 @@
 import { Funcionario } from "src/funcionarios/entities/funcionario.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Emprestimo {
@@ -20,5 +20,6 @@ export class Emprestimo {
     emprestimoStatus: boolean;
 
     @ManyToOne(() => Funcionario, (funcionario) => funcionario.emprestimo)
+    @JoinColumn({ name: 'funcionario_id' })
     funcionario: Funcionario;
 }
