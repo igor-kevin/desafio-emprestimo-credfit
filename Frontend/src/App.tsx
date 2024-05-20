@@ -25,7 +25,7 @@ const App: React.FC = () => {
 
   async function carregaFuncionarioNome() {
     try {
-      const nome = await api.get("funcionarios/4");
+      const nome = await api.get("funcionarios/7");
       setFuncionarioNome(nome.data.funcionario_nome);
       setFuncionarioID(nome.data.funcionario_id);
       setRepresentante(nome.data.empresa.representante_nome_social);
@@ -170,7 +170,7 @@ const App: React.FC = () => {
         <QuadroCentral>
           <Alerta>
             Você solicitou o empréstimo! Aguarde as etapas de análises serem
-            concluidas!s
+            concluidas!
           </Alerta>
           {listaCarregada ? (
             <div>
