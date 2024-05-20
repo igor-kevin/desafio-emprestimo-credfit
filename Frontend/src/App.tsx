@@ -170,7 +170,7 @@ const App: React.FC = () => {
         <QuadroCentral>
           <Alerta>
             Você solicitou o empréstimo! Aguarde as etapas de análises serem
-            concluidas!
+            concluidas!s
           </Alerta>
           {listaCarregada ? (
             <div>
