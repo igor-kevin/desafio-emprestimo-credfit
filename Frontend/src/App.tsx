@@ -19,12 +19,14 @@ const App: React.FC = () => {
 
   async function carregaFuncionarioNome() {
     try {
-      const nome = await api.get("funcionarios/2");
+      const nome = await api.get("funcionarios/4");
       setFuncionarioNome(nome.data.funcionario_nome);
-      console.log(nome.data);
 
-      const resposta = await api.get(`representantes/${}`);
-      setRepresentante(resposta.data.representante_nome_social);
+      console.log("empresa do func");
+      console.log("empresa do func" + nome.data.empresa);
+
+      console.log(nome.data.empresa.representante_nome_social);
+      setRepresentante(nome.data.empresa.representante_nome_social);
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
     }
