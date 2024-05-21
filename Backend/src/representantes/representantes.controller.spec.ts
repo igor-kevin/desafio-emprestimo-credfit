@@ -6,7 +6,7 @@ import { Representante } from './entities/representante.entity';
 import { Repository } from 'typeorm';
 import { CreateRepresentanteDto } from './dto/create-representante.dto';
 import { Funcionario } from 'src/funcionarios/entities/funcionario.entity';
-import { ConflictException } from '@nestjs/common';
+import { ConflictException, NotFoundException } from '@nestjs/common';
 
 describe('RepresentantesController', () => {
   let controller: RepresentantesController;
@@ -35,7 +35,20 @@ describe('RepresentantesController', () => {
         }
       ]
 
+    }),
+    findOne: jest.fn(id => {
+      if (id == 1) {
+        return {
+          representante_id: 1,
+          representante_cnpj: 12,
+          representante_razao_social: 'Empresa 1',
+          funcionario: new Funcionario()
+        };
+      } else {
+        throw new NotFoundException(`Não achou o representante de id #${id}`);
+      }
     })
+
 
   }
 
@@ -92,7 +105,8 @@ describe('RepresentantesController', () => {
       await expect(controller.create(createDto)).rejects.toThrow(ConflictException);
       expect(service.create).toHaveBeenCalledWith(createDto);
     });
-
+  });
+  describe('Teste do FindAll', () => {
     it('Deve retornar todos os represntates', async () => {
       const respostaEsperada = [
         {
@@ -114,6 +128,18 @@ describe('RepresentantesController', () => {
       expect(service.findAll).toHaveBeenCalled();
     })
   }
-
-  )
+  );
+  describe('Teste do FindAll', () => {
+    it('Tem que retornar um representante dado seu id', async () => {
+      const respostaEsperada = {
+        representante_id: 1,
+        representante_cnpj: 12,
+        representante_razao_social: 'Empresa 1',
+        funcionario: expect.any(Funcionario)
+      };
+      const result = await controller.findOne('1');
+      expect(result).toEqual(respostaEsperada);
+      expect(service.findOne).toHaveBeenCalledWith(1);
+    })
+  });
 });
