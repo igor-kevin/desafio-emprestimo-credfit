@@ -25,7 +25,7 @@ export class Funcionario {
     @OneToMany(() => Emprestimo, (emprestimo) => emprestimo.funcionario)
     emprestimo: Emprestimo[]
 
-    @ManyToOne(() => Representante, (funcionario) => funcionario.empresa)
+    @ManyToOne(() => Representante, (funcionario) => funcionario.funcionario)
     @JoinColumn({ name: 'representante_id' })
     empresa: Representante;
 

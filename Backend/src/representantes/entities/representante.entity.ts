@@ -13,5 +13,5 @@ export class Representante {
     representante_nome_social: string;
 
     @OneToMany(() => Funcionario, (funcionario) => funcionario.empresa)
-    empresa: Representante;
+    funcionario: Funcionario;
 }
