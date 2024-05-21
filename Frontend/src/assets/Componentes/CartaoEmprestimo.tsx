@@ -80,6 +80,11 @@ function CartaoEmprestimo({
             <p>R${(valor / (parcelas * 100)).toFixed(2)}</p>
           </div>
         </div>
+        <div className="row">
+          <div className="text-center">
+            <a href="#">Mais informações</a>
+          </div>
+        </div>
       </div>
     </div>
   );
