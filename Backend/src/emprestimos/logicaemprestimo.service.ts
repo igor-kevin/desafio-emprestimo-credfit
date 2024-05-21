@@ -1,24 +1,27 @@
 import { Injectable, NotAcceptableException } from "@nestjs/common";
 import axios from 'axios';
 import { Funcionario } from "src/funcionarios/entities/funcionario.entity";
-import { FuncionariosService } from "src/funcionarios/funcionarios.service";
 
 @Injectable()
 export class LogicaEmprestimoService {
-    constructor(private readonly funcService: FuncionariosService) {
+    constructor() {
 
     }
-
 
 
     async checkaAprovado(funcionario: Funcionario): Promise<boolean> {
         const score_funcionario = await this.getScore(funcionario);
         const scoreAprovacao = this.getMinScore(funcionario.funcionario_salario);
-        console.log(`Esse é o score do funcionario: ${score_funcionario}, tem que ser maior que aprovação ${scoreAprovacao}:\n Resultado é:${score_funcionario > +scoreAprovacao}`)
+        console.log(`Esse é o score do funcionario: ${score_funcionario}, tem que ser maior ou igual que a aprovação ${scoreAprovacao}:\n Resultado é:${score_funcionario >= +scoreAprovacao}`)
         if (scoreAprovacao == -1) {
+            console.log('VO JOGA O ERRO ACIMA DE 12K')
             throw new Error('Salário acima de R$12000,00. Inválido para score.');
         }
-        return (score_funcionario > scoreAprovacao);
+        if (scoreAprovacao == -2) {
+            console.log('VO JOGA O ERRO SALÁRIO NULL')
+            throw new Error('Funcionário não tem salário definido. Pode ser representante.');
+        }
+        return (score_funcionario >= scoreAprovacao);
     }
 
     // temporariamente(espero) não utilizado
@@ -40,8 +43,10 @@ export class LogicaEmprestimoService {
         return true;
     }
 
-    private getMinScore(salario: number): number {
+    private getMinScore(salario: number | null): number {
         switch (true) {
+            case salario == null:
+                return -2
             case salario <= 2000:
                 return 400;
             case salario <= 4000 && salario > 2000:
