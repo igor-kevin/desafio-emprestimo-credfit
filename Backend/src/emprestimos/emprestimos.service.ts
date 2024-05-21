@@ -32,23 +32,25 @@ export class EmprestimosService {
     let statusAtual = false;
     const funcionario: Funcionario = await this.funcionarioRepository.findOne({ where: { funcionario_id: createEmprestimoDto.funcionario_id }, relations: ['empresa'] });
     console.log('funcionario não deve estar undefined ' + funcionario.funcionario_id)
-
+    console.log('se ele é conveniado', this.logica.isConveniado(funcionario))
     if (!this.logica.isConveniado(funcionario)) {
       checkingEmprestimoStatus = 1;
       // return "Não foi feito o empréstimo, pois não é um funcionário de uma empresa conveniada."
     }
 
     if (!this.logica.isDentroDoBolso(funcionario, (createEmprestimoDto.valor / 100), createEmprestimoDto.parcelas)) {
+      console.log("n dentro do bolso")
       checkingEmprestimoStatus = 2;
       // return `A parcela está acima do aceito para o seu salário. \n R$${((funcionario.funcionario_salario) * 0.35).toFixed(2)} é o máximo para cada uma das suas parcelas.\n A que você está tentando é R$${createEmprestimoDto.valor / createEmprestimoDto.parcelas}`
     }
     try {
       const aprovado = await this.logica.checkaAprovado(funcionario)
       if (!aprovado) {
+        console.log("score muito baixo")
         checkingEmprestimoStatus = 3;
         // return "Não foi feito o empréstimo, score muito baixo."
       }
-      if (checkingEmprestimoStatus != 0) {
+      if (checkingEmprestimoStatus == 0) {
         statusAtual = await this.logica.getStatus()
       }
 
@@ -60,9 +62,7 @@ export class EmprestimosService {
         isEmprestimoEntregue: statusAtual,
         funcionario: funcionario,
       }
-      console.log('esse é o valor emprestimo para criar: ' + emprestimo.valor)
-
-      const listacompletaemprestimo = await this.findEmprestimosPorFuncionario(funcionario.funcionario_id)
+      console.log('esse é o valor emprestimo para criar: ' + emprestimo.valor, emprestimo.parcelas, emprestimo.primeiroPagamento, emprestimo.funcionario, emprestimo.emprestimoStatus, emprestimo.isEmprestimoEntregue)
 
       const emprestimoCompleto = await this.emprestimoRepository.create(emprestimo)
 
@@ -71,6 +71,8 @@ export class EmprestimosService {
 
 
     } catch (error) {
+      console.log(('caiu no erro do create grande'));
+
       return { error: error.message }
     }
 
