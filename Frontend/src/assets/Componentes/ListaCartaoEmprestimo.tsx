@@ -8,7 +8,7 @@ function ListaCartaoEmprestimo({ emprestimos }) {
         <CartaoEmprestimo
           representante={emprestimo.representante}
           parcelas={emprestimo.parcelas}
-          status={emprestimo.emprestimoStatus === 2} // Verifica se o empréstimo está aprovado
+          status={emprestimo.emprestimoStatus === 2}
         />
       ))}
     </div>

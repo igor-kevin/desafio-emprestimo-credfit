@@ -60,22 +60,16 @@ export class EmprestimosService {
         primeiroPagamento: this.proxVencimento(),
         emprestimoStatus: checkingEmprestimoStatus,
         isEmprestimoEntregue: statusAtual,
-        funcionario: funcionario,
+        funcionario: funcionario
       }
-      console.log('esse é o valor emprestimo para criar: ' + emprestimo.valor, emprestimo.parcelas, emprestimo.primeiroPagamento, emprestimo.funcionario, emprestimo.emprestimoStatus, emprestimo.isEmprestimoEntregue)
 
-      const emprestimoCompleto = await this.emprestimoRepository.create(emprestimo)
-
+      const emprestimoCompleto = this.emprestimoRepository.create(emprestimo)
 
       return this.emprestimoRepository.save(emprestimoCompleto);
 
-
     } catch (error) {
-      console.log(('caiu no erro do create grande'));
-
       return { error: error.message }
     }
-
   }
 
 
@@ -85,10 +79,6 @@ export class EmprestimosService {
     return proxPagamento;
   }
 
-  findAll() {
-    return this.emprestimoRepository.find();
-  }
-
   async findEmprestimosPorFuncionario(funcionario_id: number): Promise<Emprestimo[]> {
     const listacompleta = await this.emprestimoRepository.find({
       where: { funcionario: { funcionario_id: funcionario_id } }
@@ -96,12 +86,4 @@ export class EmprestimosService {
     return listacompleta;
   }
 
-
-  update(id: number, updateEmprestimoDto: UpdateEmprestimoDto) {
-    return `This action updates a #${id} emprestimo`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} emprestimo`;
-  }
 }

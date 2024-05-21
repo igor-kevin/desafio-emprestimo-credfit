@@ -21,13 +21,13 @@ export class FuncionariosService {
   async create(createFuncionarioDto: CreateFuncionarioDto): Promise<Funcionario> {
 
     const { representante_id, ...funcionarioData } = createFuncionarioDto;
-    const representante = await this.representanteRepository.findOne({ where: { representante_id } })
-    if (!representante) {
+    const existeRepresentante = await this.representanteRepository.findOne({ where: { representante_id } })
+    if (!existeRepresentante) {
       throw new NotFoundException(`Não encontrei o representante com id:${representante_id}`);
     }
     const novoFuncionario = this.funcionarioRepository.create({
       ...funcionarioData,
-      empresa: representante,
+      empresa: existeRepresentante,
     })
 
     try {
@@ -45,13 +45,13 @@ export class FuncionariosService {
 
   async getEmpresaDoFuncionario(funcionario: Funcionario): Promise<number> {
     try {
-      const representante = await this.representanteRepository.findOne({ where: { representante_id: funcionario.empresa.representante_id } });
+      const existeRepresentante = await this.representanteRepository.findOne({ where: { representante_id: funcionario.empresa.representante_id } });
 
 
-      if (!representante) {
+      if (!existeRepresentante) {
         throw new NotFoundException(`Não encontrei o representante com id:${funcionario.empresa.representante_id}`);
       }
-      return representante.representante_id;
+      return existeRepresentante.representante_id;
     }
     catch (error) {
       if (error instanceof NotFoundException) {
@@ -82,29 +82,16 @@ export class FuncionariosService {
   }
 
   async findOne(id: number): Promise<Funcionario> {
-    const funcionario = await this.funcionarioRepository.findOne({ where: { funcionario_id: id }, relations: ["empresa"] });
+    const existeFuncionario = await this.funcionarioRepository.findOne({ where: { funcionario_id: id }, relations: ["empresa"] });
 
 
-    if (!funcionario) {
+    if (!existeFuncionario) {
       throw new NotFoundException(`Não foi possível acessar o funcionario de id ${id}`)
     }
 
-    return funcionario;
+    return existeFuncionario;
   }
 
-  async update(id: number, updateFuncionarioDto: UpdateFuncionarioDto) {
-    const funcionario = await this.funcionarioRepository.findOne({ where: { funcionario_id: id } })
-    if (!funcionario) {
-      throw new NotFoundException(`Não foi possível acessar o funcionario de id ${id}`)
-    }
-    return this.funcionarioRepository.create({ ...funcionario, ...updateFuncionarioDto })
-  }
 
-  async remove(id: number): Promise<void> {
-    const funcionario = await this.funcionarioRepository.findOne({ where: { funcionario_id: id } })
-    if (!funcionario) {
-      throw new NotFoundException(`Não foi possível acessar o funcionario de id ${id}`)
-    }
-    await this.funcionarioRepository.delete(funcionario)
-  }
+
 }

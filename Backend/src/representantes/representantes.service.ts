@@ -15,11 +15,11 @@ export class RepresentantesService {
   async create(createRepresentanteDto: CreateRepresentanteDto) {
     const { representante_cnpj, representante_razao_social } = createRepresentanteDto;
 
-    const representanteExists = await this.representanteRepository.findOne({
+    const existeRepresentante = await this.representanteRepository.findOne({
       where: [{ representante_cnpj: representante_cnpj }, { representante_nome_social: representante_razao_social }]
     });
 
-    if (representanteExists) {
+    if (existeRepresentante) {
       throw new ConflictException('Já existe um representante com esses dados.');
     }
 
@@ -32,21 +32,21 @@ export class RepresentantesService {
   }
 
   findOne(id: number): Promise<Representante> {
-    const representante = this.representanteRepository.findOne({ where: { representante_id: id } });
-    if (!representante) {
+    const existeRepresentante = this.representanteRepository.findOne({ where: { representante_id: id } });
+    if (!existeRepresentante) {
       throw new NotFoundException(`Não achou o representante de id #${id}`);
     }
-    return representante;
+    return existeRepresentante;
   }
 
   async update(id: number, updateRepresentanteDto: UpdateRepresentanteDto): Promise<Representante> {
-    const representante = await this.representanteRepository.findOne({ where: { representante_id: id } });
-    if (!representante) {
+    const existeRepresentante = await this.representanteRepository.findOne({ where: { representante_id: id } });
+    if (!existeRepresentante) {
       throw new NotFoundException(`Não achou o representante de id #${id}`);
     }
 
     try {
-      const novoRepresentante = this.representanteRepository.create({ ...representante, ...updateRepresentanteDto });
+      const novoRepresentante = this.representanteRepository.create({ ...existeRepresentante, ...updateRepresentanteDto });
       return await this.representanteRepository.save(novoRepresentante);
     } catch (error) {
       if (error.code === '23505') {

@@ -28,13 +28,4 @@ export class FuncionariosController {
     return await this.funcionariosService.getEmpresaDoFuncionario(funcionario);
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateFuncionarioDto: UpdateFuncionarioDto) {
-    return this.funcionariosService.update(+id, updateFuncionarioDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.funcionariosService.remove(+id);
-  }
 }

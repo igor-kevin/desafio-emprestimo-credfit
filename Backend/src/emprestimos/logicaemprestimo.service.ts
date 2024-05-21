@@ -14,17 +14,14 @@ export class LogicaEmprestimoService {
         const scoreAprovacao = this.getMinScore(funcionario.funcionario_salario);
         console.log(`Esse é o score do funcionario: ${score_funcionario}, tem que ser maior ou igual que a aprovação ${scoreAprovacao}:\n Resultado é:${score_funcionario >= +scoreAprovacao}`)
         if (scoreAprovacao == -1) {
-            console.log('VO JOGA O ERRO ACIMA DE 12K')
             throw new Error('Salário acima de R$12000,00. Inválido para score.');
         }
         if (scoreAprovacao == -2) {
-            console.log('VO JOGA O ERRO SALÁRIO NULL')
             throw new Error('Funcionário não tem salário definido. Pode ser representante.');
         }
         return (score_funcionario >= scoreAprovacao);
     }
 
-    // temporariamente(espero) não utilizado
     isConveniado(funcionario: Funcionario): boolean {
         if (funcionario.empresa != null) {
             return true
@@ -70,6 +67,7 @@ export class LogicaEmprestimoService {
     }
 
     async getStatus(): Promise<boolean> {
+        console.log('entrei no getstatus')
         const emprestimoStatus = await axios.get('https://run.mocky.io/v3/ed999ce0-d115-4f73-b098-6277aabbd144')
         return emprestimoStatus.data.ok;
     }
