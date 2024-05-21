@@ -44,20 +44,24 @@ export class RepresentantesService {
     if (!representante) {
       throw new NotFoundException(`Não achou o representante de id #${id}`);
     }
-    // O teste catch não ta levantando nenhum erro, mas ele também não atualiza o dado caso seja igual.
+
     try {
-      return this.representanteRepository.create({ ...representante, ...updateRepresentanteDto });
+      const novoRepresentante = this.representanteRepository.create({ ...representante, ...updateRepresentanteDto });
+      return await this.representanteRepository.save(novoRepresentante);
     } catch (error) {
-      // 23505 é o erro do postgre
       if (error.code === '23505') {
-        throw new ConflictException('Já existe um representante com algum esses dados que eram para ser unique.');
+        throw new ConflictException('Já existe um representante com algum desses dados que eram para ser unique.');
       } else {
         throw error;
       }
     }
   }
 
-  async remove(id: number) {
-    const representante = await this.representanteRepository.findOne({ where: { representante_id: id } })
+  async remove(id: number): Promise<void> {
+    const representante = await this.representanteRepository.findOne({ where: { representante_id: id } });
+    if (!representante) {
+      throw new NotFoundException(`Representante com ID ${id} não encontrado`);
+    }
+    await this.representanteRepository.remove(representante);
   }
 }
