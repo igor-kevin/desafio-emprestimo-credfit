@@ -1,6 +1,8 @@
 import { Injectable, NotAcceptableException } from "@nestjs/common";
 import axios from 'axios';
 import { Funcionario } from "src/funcionarios/entities/funcionario.entity";
+const SALARIO_FOI_INVALIDO = -1
+const SALARIO_FOI_INDEFINIDO = -2
 
 @Injectable()
 export class LogicaEmprestimoService {
@@ -10,16 +12,16 @@ export class LogicaEmprestimoService {
 
     // Checka se o emprestimo que o funcionário está pedindo foi aprovado
     async checkaAprovado(funcionario: Funcionario): Promise<boolean> {
-        const score_funcionario = await this.getScore(funcionario);
+        const scoreFuncionario = await this.getScore(funcionario);
         const scoreAprovacao = this.getMinScore(funcionario.funcionario_salario);
 
-        if (scoreAprovacao == -1) {
+        if (scoreAprovacao == SALARIO_FOI_INVALIDO) {
             throw new Error('Salário acima de R$12000,00 ou abaixo de R$0,00. Inválido para score.');
         }
-        if (scoreAprovacao == -2) {
+        if (scoreAprovacao == SALARIO_FOI_INDEFINIDO) {
             throw new Error('Funcionário não tem salário definido. Pode ser representante.');
         }
-        return (score_funcionario >= scoreAprovacao);
+        return (scoreFuncionario >= scoreAprovacao);
     }
 
     // Checka se o funcioniário é de uma empresa conveniada.
@@ -32,10 +34,10 @@ export class LogicaEmprestimoService {
 
     // Checka se as parcelas do emprestimo estão menor do que 35% do salário
     isDentroDoBolso(funcionario: Funcionario, valor: number, parcelas: number): boolean {
-        const salario = funcionario.funcionario_salario * 0.35
+        const limite_da_parcela = funcionario.funcionario_salario * 0.35
 
         let porcentagemValor = (valor / parcelas)
-        if ((porcentagemValor > salario)) {
+        if ((porcentagemValor > limite_da_parcela)) {
             return false;
         }
         return true;
