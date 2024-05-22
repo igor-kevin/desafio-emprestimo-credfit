@@ -10,6 +10,12 @@ Este é um sistema de empréstimo consignado desenvolvido com Nest. js no backen
 - Acompanhamento do status da soliticação de empréstimo via API externa.
 - Listagem de empréstimos do funcionário, podendo ser aceito ou negado por motivo exibido no cartão.
 
+## Pré-Requisitos
+
+- Node.js >= v20.12.2
+- npm >= 10.8
+- PostgreSQL
+
 ## Instalação
 
 ### Backend
