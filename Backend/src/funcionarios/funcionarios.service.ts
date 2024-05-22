@@ -83,15 +83,9 @@ export class FuncionariosService {
 
   async findOne(id: number): Promise<Funcionario> {
     const existeFuncionario = await this.funcionarioRepository.findOne({ where: { funcionario_id: id }, relations: ["empresa"] });
-
-
     if (!existeFuncionario) {
       throw new NotFoundException(`Não foi possível acessar o funcionario de id ${id}`)
     }
-
     return existeFuncionario;
   }
-
-
-
 }

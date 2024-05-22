@@ -90,7 +90,7 @@ describe('RepresentantesService', () => {
     });
 
 
-    it('should throw a NotFoundException if no representante is found', async () => {
+    it('deve throw NotFoundException se nenhum representante for encontrado', async () => {
       jest.spyOn(repository, 'findOne').mockRejectedValueOnce(new NotFoundException(`Não achou o representante de id #${1}`));
 
       await expect(service.findOne(1)).rejects.toThrow(NotFoundException);
@@ -155,6 +155,7 @@ describe('RepresentantesService', () => {
   });
 
   describe('remove', () => {
+
     it('deve remover o representante caso encontre', async () => {
       const funcionario: Funcionario = {
         funcionario_id: 0,
@@ -181,7 +182,8 @@ describe('RepresentantesService', () => {
       expect(repository.remove).toHaveBeenCalledWith(representante);
       expect(repository.findOne).toHaveBeenCalledWith({ where: { representante_id: 1 } });
     }),
-      it('should throw a NotFoundException if no representante is found', async () => {
+
+      it('deve throw NotFoundException se ñao encontrar o representante', async () => {
         jest.spyOn(repository, 'findOne').mockResolvedValueOnce(null);
 
         await expect(service.remove(1)).rejects.toThrow(NotFoundException);
