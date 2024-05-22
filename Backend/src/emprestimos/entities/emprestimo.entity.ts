@@ -7,21 +7,21 @@ export class Emprestimo {
     @PrimaryGeneratedColumn()
     emprestimo_id: number;
 
-    @Column()
+    @Column({ type: 'int' })
     valor: number;
 
-    @Column()
+    @Column({ type: 'int' })
     parcelas: number;
 
     @Column()
     primeiroPagamento: Date;
 
     // Caso o empréstimo não seja aceito retorna o motivo.
-    @Column()
+    @Column({ type: 'int' })
     emprestimoStatus: number;
 
 
-    @Column()
+    @Column({ type: 'boolean' })
     isEmprestimoEntregue: boolean;
 
     @ManyToOne(() => Funcionario, (funcionario) => funcionario.emprestimo)

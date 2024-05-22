@@ -72,6 +72,7 @@ const App: React.FC = () => {
     if (funcionarioId === undefined) {
       return;
     }
+
     try {
       const emprestimoFinal = await geraEmprestimo(funcionarioId);
       console.log("Empréstimo criado com sucesso:", emprestimoFinal);
@@ -97,11 +98,13 @@ const App: React.FC = () => {
             handleArrasta={handleArrasta}
           />
         </QuadroCentral>
-        <Botoes
-          onVoltar={handleVoltar}
-          onSimular={handleSimular}
-          nome="Simular Empréstimo"
-        />
+        {representante == null ? null : (
+          <Botoes
+            onVoltar={handleVoltar}
+            onSimular={handleSimular}
+            nome="Simular Empréstimo"
+          />
+        )}
       </div>
       {/* <Teste /> */}
       <Cabecalho usuario={funcionarioNome} />

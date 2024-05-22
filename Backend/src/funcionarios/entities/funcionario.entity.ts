@@ -10,7 +10,7 @@ export class Funcionario {
     @Column()
     funcionario_nome: string;
 
-    @Column({ unique: true })
+    @Column({ unique: true, type: 'int' })
     funcionario_cpf: number;
 
     @Column({ unique: true })
@@ -19,7 +19,7 @@ export class Funcionario {
     @Column()
     funcionario_senha: string;
 
-    @Column()
+    @Column({ nullable: true, type: 'int' })
     funcionario_salario: number;
 
     @OneToMany(() => Emprestimo, (emprestimo) => emprestimo.funcionario)
