@@ -22,13 +22,15 @@ Este é um sistema de empréstimo consignado desenvolvido com Nest. js no backen
     instale as dependencias:
         npm install
     3. Configure as variáveis do banco de dados criando um arquivo '.env' seguindo o exemplo:
-        DATABASE_HOST=localhost
-        DATABASE_PORT=5432
-        DATABASE_USERNAME=postgres
-        DATABASE_PASSWORD=postgres
+        DATABASE_HOST=host_do_db
+        DATABASE_PORT=port_do_db
+        DATABASE_USERNAME=username_do_db
+        DATABASE_PASSWORD=senha_do_db
         DATABASE_NAME= nome_do_seu_db
     4. Inicie o servidor:
          npm run start:dev
+
+        OBS: o backend precisa de um banco de dados alimentado para funcionar, explicações no vídeo abaixo.
 
 ### Frontend
 
