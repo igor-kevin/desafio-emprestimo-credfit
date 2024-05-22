@@ -7,11 +7,13 @@ interface CartaoEmprestimoProps {
   status: boolean;
   proxPagamento: Date;
   foiPago: boolean;
+  codigoDeErro: number;
 }
 function CartaoEmprestimo({
   valor,
   representante,
   parcelas,
+  codigoDeErro,
   proxPagamento,
   foiPago,
 }: CartaoEmprestimoProps) {
