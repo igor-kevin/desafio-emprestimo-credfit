@@ -16,23 +16,28 @@ Este é um sistema de empréstimo consignado desenvolvido com Nest. js no backen
 ### Backend
 
 1. Clone o repositório do git:
-   https://github.com/igor-kevin/desafio-emprestimo-credfit 2. Entre no diretório do backend:
-   cd backend 3. Instale as dependencias:
-   npm install 4. Configure as variáveis do banco de dados criando um arquivo '.env' seguindo o exemplo:
+   https://github.com/igor-kevin/desafio-emprestimo-credfit
+2. Entre no diretório do backend:
+   cd backend
+3. Instale as dependencias:
+   npm install
+4. Configure as variáveis do banco de dados criando um arquivo '.env' seguindo o exemplo:
    DATABASE_HOST=host_do_db
    DATABASE_PORT=port_do_db
    DATABASE_USERNAME=username_do_db
    DATABASE_PASSWORD=senha_do_db
-   DATABASE_NAME= nome_do_seu_db 5. Inicie o servidor:
+   DATABASE_NAME= nome_do_seu_db
+5. Inicie o servidor:
    npm run start:dev
    OBS: o backend precisa de um banco de dados alimentado para funcionar, explicações no vídeo presente no read.me.
 
 ### Frontend
 
-1. Em outro terminal entre no diretório do frontend
-   cd frontend
-2. Instale as dependencias:
-   npm install
+        1. Em outro terminal entre no diretório do frontend
+    cd frontend
+    2. Instale as dependencias:
+    npm install
+
 3. Inicie o cliente:
    npm run dev
    Acesse o aplicativo em seu navegador em:
