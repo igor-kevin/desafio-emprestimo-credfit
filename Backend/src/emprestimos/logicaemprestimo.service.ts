@@ -14,7 +14,7 @@ export class LogicaEmprestimoService {
         const scoreAprovacao = this.getMinScore(funcionario.funcionario_salario);
 
         if (scoreAprovacao == -1) {
-            throw new Error('Salário acima de R$12000,00. Inválido para score.');
+            throw new Error('Salário acima de R$12000,00 ou abaixo de R$0,00. Inválido para score.');
         }
         if (scoreAprovacao == -2) {
             throw new Error('Funcionário não tem salário definido. Pode ser representante.');
@@ -41,12 +41,14 @@ export class LogicaEmprestimoService {
         return true;
     }
 
-    // Retorna o score mínimo dado um salário.
+    // Retorna o score mínimo dado um salário. Salários acima de 12000 e menores que zero retornam -1 que é tratado como inválido
     private getMinScore(salario: number | null): number {
         switch (true) {
             case salario == null:
                 return -2
-            case salario <= 2000:
+            case salario > 12000 || salario < 0:
+                return -1
+            case salario >= 0 && salario <= 2000:
                 return 400;
             case salario <= 4000 && salario > 2000:
                 return 500;
@@ -54,8 +56,6 @@ export class LogicaEmprestimoService {
                 return 600;
             case salario <= 12000 && salario > 8000:
                 return 700;
-            case salario > 12000:
-                return -1
         }
     }
 

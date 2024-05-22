@@ -1,9 +1,7 @@
-import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { EmprestimosService } from './emprestimos.service';
 import { CreateEmprestimoDto } from './dto/create-emprestimo.dto';
-import { UpdateEmprestimoDto } from './dto/update-emprestimo.dto';
-import { Funcionario } from 'src/funcionarios/entities/funcionario.entity';
-import { Repository } from 'typeorm';
+
 
 @Controller('emprestimos')
 export class EmprestimosController {

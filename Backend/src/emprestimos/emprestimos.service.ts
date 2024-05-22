@@ -1,13 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CreateEmprestimoDto } from './dto/create-emprestimo.dto';
-import { UpdateEmprestimoDto } from './dto/update-emprestimo.dto';
 import { LogicaEmprestimoService } from './logicaemprestimo.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Emprestimo } from './entities/emprestimo.entity';
 import { Repository } from 'typeorm';
 import { Funcionario } from 'src/funcionarios/entities/funcionario.entity';
 import { Representante } from 'src/representantes/entities/representante.entity';
-import { log } from 'console';
 
 @Injectable()
 export class EmprestimosService {

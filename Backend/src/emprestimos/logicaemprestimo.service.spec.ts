@@ -113,7 +113,13 @@ describe('LogicaEmprestimosService', () => {
         it('Deve lançar um erro se o salário for acima de R$12.000,00', async () => {
             funcionario.funcionario_salario = 12001
             mockedAxios.get.mockResolvedValueOnce({ data: { score: 699 } })
-            await expect(service.checkaAprovado(funcionario)).rejects.toThrow(new Error("Salário acima de R$12000,00. Inválido para score."));
+            await expect(service.checkaAprovado(funcionario)).rejects.toThrow(new Error("Salário acima de R$12000,00 ou abaixo de R$0,00. Inválido para score."));
+        });
+
+        it('Deve lançar um erro se o salário for abaixo de R$0,00', async () => {
+            funcionario.funcionario_salario = -1
+            mockedAxios.get.mockResolvedValueOnce({ data: { score: 699 } })
+            await expect(service.checkaAprovado(funcionario)).rejects.toThrow(new Error("Salário acima de R$12000,00 ou abaixo de R$0,00. Inválido para score."));
         });
 
         it('Deve lançar uma exceção se o salário não estiver definido', async () => {
