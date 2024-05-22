@@ -1,6 +1,5 @@
 import CartaoEmprestimo from "./CartaoEmprestimo";
 
-// Função para renderizar a lista de empréstimos
 function ListaCartaoEmprestimo({ emprestimos }) {
   return (
     <div>

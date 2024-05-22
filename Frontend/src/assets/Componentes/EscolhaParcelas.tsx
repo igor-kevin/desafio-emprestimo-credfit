@@ -34,7 +34,11 @@ function EscolhaParcelas({
           <p>
             {" "}
             <div style={{ fontSize: "25", color: "CadetBlue" }}>
-              R${(valor / 100).toFixed(2)}
+              R$
+              {(valor / 100).toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </div>
           </p>
         </button>
@@ -53,7 +57,11 @@ function EscolhaParcelas({
           2 x de{" "}
           <p>
             <div style={{ fontSize: "25", color: "CadetBlue" }}>
-              R${(valor / 200).toFixed(2)}
+              R$
+              {(valor / 200).toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </div>
           </p>
         </button>
@@ -74,7 +82,11 @@ function EscolhaParcelas({
           3 x de{" "}
           <p>
             <div style={{ fontSize: "25", color: "CadetBlue" }}>
-              R${(valor / 300).toFixed(2)}
+              R$
+              {(valor / 300).toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </div>
           </p>
         </button>
@@ -94,7 +106,10 @@ function EscolhaParcelas({
           <p>
             <div style={{ fontSize: "25", color: "CadetBlue" }}>
               R$
-              {(valor / 400).toFixed(2)}
+              {(valor / 400).toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </div>
           </p>
         </button>

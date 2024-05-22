@@ -15,10 +15,6 @@ export class EmprestimosController {
     return this.emprestimosService.create(createEmprestimoDto);
   }
 
-  @Get()
-  findAll() {
-    return this.emprestimosService.findAll();
-  }
 
   @Get('/funcionario/:id')
   findEmprestimosPorFuncionario(@Param('id') id: number) {
@@ -26,13 +22,4 @@ export class EmprestimosController {
   }
 
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateEmprestimoDto: UpdateEmprestimoDto) {
-    return this.emprestimosService.update(+id, updateEmprestimoDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.emprestimosService.remove(+id);
-  }
 }

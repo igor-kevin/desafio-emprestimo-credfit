@@ -1,5 +1,4 @@
 import Alerta from "./assets/Componentes/Alerta";
-import BarraDeArrasta from "./assets/Componentes/BarraDeArrasta";
 import Cabecalho from "./assets/Componentes/Cabecalho";
 import QuadroCentral from "./assets/Componentes/QuadroCentral";
 import Diretorios from "./assets/Componentes/Diretorios";
@@ -10,13 +9,12 @@ import { api } from "./services/api";
 import EscolhaParcelas from "./assets/Componentes/EscolhaParcelas";
 import ResumoSimulacao from "./assets/Componentes/ResumoSimulacao";
 import CartaoEmprestimo from "./assets/Componentes/CartaoEmprestimo";
-import RenderizarEmprestimos from "./assets/Componentes/ListaCartaoEmprestimo";
-import ListaCartaoEmprestimo from "./assets/Componentes/ListaCartaoEmprestimo";
+import CheckRepresentante from "./assets/Componentes/CheckRepresentante";
 
 const App: React.FC = () => {
   //declaração dos estados
   const [representante, setRepresentante] = useState();
-  const [funcionarioNome, setFuncionarioNome] = useState(1);
+  const [funcionarioNome, setFuncionarioNome] = useState<string>();
   const [funcionarioId, setFuncionarioID] = useState<number | undefined>();
   const [valor, setValor] = useState<number>(0);
   const [parcelas, setParcelas] = useState(1);
@@ -59,8 +57,6 @@ const App: React.FC = () => {
   };
 
   const handleVoltar = () => {
-    console.log(`Valor: ${valor}, Parcelas: ${parcelas}`);
-    console.log(listaEmprestimo);
     console.log("Voltar clicked");
   };
 
@@ -74,17 +70,14 @@ const App: React.FC = () => {
 
   const handleFinal = async () => {
     if (funcionarioId === undefined) {
-      console.error("funcionarioId não está definido");
       return;
     }
-    console.log("Agora é só fazer tudo.");
     try {
       const emprestimoFinal = await geraEmprestimo(funcionarioId);
       console.log("Empréstimo criado com sucesso:", emprestimoFinal);
       const emprestimosLista = await api.get(
         `emprestimos/funcionario/${funcionarioId}`
       );
-      console.log(emprestimosLista.data);
       setListaEmprestimo(emprestimosLista.data);
       setListaCarregada(true);
     } catch (error) {
@@ -98,18 +91,11 @@ const App: React.FC = () => {
       <div className="container" style={{ backgroundSize: "100va" }}>
         <Diretorios />
         <QuadroCentral>
-          <h5>
-            <span className="" style={{ color: "CadetBlue" }}>
-              <b>Simular Empréstimo</b>
-            </span>
-          </h5>
-          <Alerta>
-            Você possui saldo para Crédito Consignado pela empresa{" "}
-            {representante}. Faça uma simulação!
-            <p>Escolha quanto você precisa:</p>
-          </Alerta>
-          <CampoValor value={valor} />
-          <BarraDeArrasta valor={valor} onArrasta={handleArrasta} />
+          <CheckRepresentante
+            representante={representante}
+            valor={valor}
+            handleArrasta={handleArrasta}
+          />
         </QuadroCentral>
         <Botoes
           onVoltar={handleVoltar}

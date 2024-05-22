@@ -11,7 +11,11 @@ const CampoValor: React.FC<CampoValorProps> = ({ value }) => {
         className="bg-light border rounded p-3"
         style={{ display: "inline-block", color: "green", fontSize: "30" }}
       >
-        R${(value / 100).toFixed(2)}
+        R$
+        {(value / 100).toLocaleString("pt-BR", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}
       </div>
     </div>
   );

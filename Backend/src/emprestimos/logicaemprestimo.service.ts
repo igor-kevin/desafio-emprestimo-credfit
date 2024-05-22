@@ -8,11 +8,11 @@ export class LogicaEmprestimoService {
 
     }
 
-
+    // Checka se o emprestimo que o funcionário está pedindo foi aprovado
     async checkaAprovado(funcionario: Funcionario): Promise<boolean> {
         const score_funcionario = await this.getScore(funcionario);
         const scoreAprovacao = this.getMinScore(funcionario.funcionario_salario);
-        console.log(`Esse é o score do funcionario: ${score_funcionario}, tem que ser maior ou igual que a aprovação ${scoreAprovacao}:\n Resultado é:${score_funcionario >= +scoreAprovacao}`)
+
         if (scoreAprovacao == -1) {
             throw new Error('Salário acima de R$12000,00. Inválido para score.');
         }
@@ -22,6 +22,7 @@ export class LogicaEmprestimoService {
         return (score_funcionario >= scoreAprovacao);
     }
 
+    // Checka se o funcioniário é de uma empresa conveniada.
     isConveniado(funcionario: Funcionario): boolean {
         if (funcionario.empresa != null) {
             return true
@@ -29,9 +30,9 @@ export class LogicaEmprestimoService {
         return false;
     }
 
+    // Checka se as parcelas do emprestimo estão menor do que 35% do salário
     isDentroDoBolso(funcionario: Funcionario, valor: number, parcelas: number): boolean {
         const salario = funcionario.funcionario_salario * 0.35
-        console.log(salario, 'salario: ', funcionario.funcionario_salario);
 
         let porcentagemValor = (valor / parcelas)
         if ((porcentagemValor > salario)) {
@@ -40,6 +41,7 @@ export class LogicaEmprestimoService {
         return true;
     }
 
+    // Retorna o score mínimo dado um salário.
     private getMinScore(salario: number | null): number {
         switch (true) {
             case salario == null:
@@ -66,8 +68,9 @@ export class LogicaEmprestimoService {
         return score.data.score;
     }
 
+
+    // Retorna o status de entrega do empréstimo. Poderia usar o funcionário como parametro igual ao método de cima para fingimento.
     async getStatus(): Promise<boolean> {
-        console.log('entrei no getstatus')
         const emprestimoStatus = await axios.get('https://run.mocky.io/v3/ed999ce0-d115-4f73-b098-6277aabbd144')
         return emprestimoStatus.data.ok;
     }

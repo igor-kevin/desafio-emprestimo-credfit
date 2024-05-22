@@ -24,17 +24,29 @@ function ResumoSimulacao({ valor, parcelas }: ResumosSimulacaoProps) {
             <p>
               <b>Valor a Creditar</b>
               <br />
-              R${(valor / 100).toFixed(2)}
+              R$
+              {(valor / 100).toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </p>
             <p>
               <b>Valor a financiar</b>
               <br />
-              R${(valor / 100).toFixed(2)}
+              R$
+              {(valor / 100).toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </p>
             <p>
               <b>Parcelamento</b>
               <br />
-              {parcelas} x R${(valor / (parcelas * 100)).toFixed(2)}
+              {parcelas} x R$
+              {(valor / (parcelas * 100)).toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </p>
           </div>
         </div>

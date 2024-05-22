@@ -4,21 +4,21 @@ interface CartaoEmprestimoProps {
   valor: number;
   representante: string;
   parcelas: number;
-  codigoDeErro: number;
   status: boolean;
   proxPagamento: Date;
+  foiPago: boolean;
 }
 function CartaoEmprestimo({
   valor,
   representante,
   parcelas,
-  codigoDeErro,
-  status,
   proxPagamento,
+  foiPago,
 }: CartaoEmprestimoProps) {
   let statusMessage = "";
   let statusClass = "";
   const dataVencimento = new Date(proxPagamento);
+  // A parte de baixo é apenas para exibir a data de maneira dia/mes/ano
   const dia = dataVencimento.getDate();
   const mes = dataVencimento.getMonth() + 1; // Os meses são baseados em zero, então adicionamos 1
   const ano = dataVencimento.getFullYear();
@@ -61,12 +61,28 @@ function CartaoEmprestimo({
             <strong>Próximo Vencimento</strong>
             <p>{`${dia}/${mes}/${ano}`}</p>
           </div>
-        </div>
 
-        <div className="row">
-          <div className="col">
-            <strong>Total Financiado</strong>
-            <p>R${(valor / 100).toFixed(2)}</p>
+          <div className="row">
+            <div className="col">
+              <strong>Total Financiado</strong>
+              <p>
+                R$
+                {(valor / 100).toLocaleString("pt-BR", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </p>
+            </div>
+            <div className="col">
+              <p>
+                <strong>Status:</strong>
+                <p>
+                  {statusMessage == "Crédito aprovado"
+                    ? "Pago"
+                    : "Não Pago/Pendente"}
+                </p>
+              </p>
+            </div>
           </div>
         </div>
 
@@ -77,7 +93,13 @@ function CartaoEmprestimo({
           </div>
           <div className="col">
             <strong>Valor da parcela</strong>
-            <p>R${(valor / (parcelas * 100)).toFixed(2)}</p>
+            <p>
+              R$
+              {(valor / (parcelas * 100)).toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </p>
           </div>
         </div>
         <div className="row">
