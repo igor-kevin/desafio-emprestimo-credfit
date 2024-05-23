@@ -63,3 +63,8 @@ OBS: o backend precisa de um banco de dados alimentado para funcionar, explicaç
     http://localhost:5173
 
 
+## Vídeo de Apresentação
+
+Link de apresentação do projeto no Youtube:
+
+    https://youtu.be/6orwHotPfFY
